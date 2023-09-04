@@ -111,7 +111,7 @@ void BinaryTree::Remove(int a_nValue)
 {
 	TreeNode* pCurrent = nullptr;
 	TreeNode* pParent = nullptr;
-	TreeNode* pTemporaryNode = nullptr;
+	TreeNode* pTemporaryNode;
 
 	// Find the node in the tree and seed the TreeNode pointers
 	if (!FindNode(a_nValue, pCurrent, pParent)) {
@@ -167,6 +167,7 @@ void BinaryTree::Remove(int a_nValue)
 		pTemporaryNode = pCurrent->GetRight();
 		while (pTemporaryNode != nullptr)
 		{
+			// Not checking for nullptr causes errors
 			if (pTemporaryNode->GetLeft() == nullptr) {
 				break;
 			}
@@ -241,5 +242,8 @@ void BinaryTree::Draw(TreeNode* pNode, int x, int y, int horizontalSpacing, Tree
 		}
 
 		pNode->Draw(x, y, (selected == pNode));
+	}
+	else {
+		ClearBackground(RAYWHITE);
 	}
 }

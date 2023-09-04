@@ -85,14 +85,57 @@ TreeNode* BinaryTree::Find(int a_nValue)
 
 bool BinaryTree::FindNode(int a_nSearchValue, TreeNode*& ppOutNode, TreeNode*& ppOutParent)
 {
-
+	if (IsEmpty()) {
+		return false;
+	}
+	ppOutNode = m_pRoot;
+	ppOutParent = m_pRoot;
+	while (ppOutNode != nullptr) {
+		if (a_nSearchValue == ppOutNode->GetData()) {
+			return true;
+		}
+		else if (a_nSearchValue > ppOutNode->GetData()) {
+			ppOutParent = ppOutNode;
+			ppOutNode = ppOutNode->GetRight();
+		}
+		else {
+			ppOutParent = ppOutNode;
+			ppOutNode = ppOutNode->GetLeft();
+		}
+	}
 
 	return false;
 }
 
 void BinaryTree::Remove(int a_nValue)
 {
+	TreeNode* pCurrent = nullptr;
+	TreeNode* pParent = nullptr;
+	TreeNode* pTemporaryNode;
 
+	if (!FindNode(a_nValue, pCurrent, pParent)) {
+		return;
+	}
+	// Check for leaf node
+	if (!pCurrent->HasLeft() && !pCurrent->HasRight()) {
+		RemoveLeaf(pCurrent);
+		return;
+	}
+	// Check for single child
+	if ((!pCurrent->HasLeft() && pCurrent->HasRight()) || (pCurrent->HasLeft() && !pCurrent->HasRight()))
+	if (pCurrent->HasRight()) {
+		pTemporaryNode = pCurrent->GetRight();
+		while (pTemporaryNode != nullptr)
+		{
+			pTemporaryNode = pTemporaryNode->GetLeft();
+		}
+		pCurrent->SetData(pTemporaryNode->GetData());
+	}
+}
+
+void BinaryTree::RemoveLeaf(TreeNode*& nodeToDelete) {
+	nodeToDelete->SetData(0);
+	delete nodeToDelete;
 }
 
 void BinaryTree::PrintOrdered()

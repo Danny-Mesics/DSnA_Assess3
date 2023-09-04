@@ -36,32 +36,43 @@ void BinaryTree::Insert(int a_nValue)
 {
 	TreeNode* newNode = new TreeNode(a_nValue);
 	TreeNode* currentNode;
+	// Set the root node
 	if (IsEmpty()) {
-		m_pRoot = newNode;
-		currentNode = m_pRoot;
+		m_pRoot = newNode;	
+		return;
 	}
+	currentNode = m_pRoot;
 	do {
+		// Check for less than
 		if (newNode->GetData() < currentNode->GetData()) {
+			// Set the node
 			if (currentNode->GetLeft() == nullptr) {
 				currentNode->SetLeft(newNode);
+				return;
 			}
+			// Continue down tree
 			else {
 				currentNode = currentNode->GetLeft();
 			}
 		}
+		// Check for greater than
 		else if (newNode->GetData() > currentNode->GetData()) {
+			// Set the node
 			if (currentNode->GetRight() == nullptr) {
 				currentNode->SetRight(newNode);
+				return;
 			}
+			// Continue down tree
 			else {
 				currentNode = currentNode->GetRight();
 			}
 		}
+		// Return if value is equal to an existing node
 		else {
 			return;
 		}
 	} 
-	while (currentNode->HasLeft() || currentNode->HasRight());
+	while (currentNode != nullptr);
 }
 
 TreeNode* BinaryTree::Find(int a_nValue)

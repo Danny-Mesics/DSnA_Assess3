@@ -111,31 +111,85 @@ void BinaryTree::Remove(int a_nValue)
 {
 	TreeNode* pCurrent = nullptr;
 	TreeNode* pParent = nullptr;
-	TreeNode* pTemporaryNode;
+	TreeNode* pTemporaryNode = nullptr;
 
+	// Find the node in the tree and seed the TreeNode pointers
 	if (!FindNode(a_nValue, pCurrent, pParent)) {
 		return;
 	}
-	// Check for leaf node
+
+	// Remove Leaf Node
 	if (!pCurrent->HasLeft() && !pCurrent->HasRight()) {
-		RemoveLeaf(pCurrent);
+		delete pCurrent;
+		pCurrent = nullptr;
 		return;
 	}
-	// Check for single child
-	if ((!pCurrent->HasLeft() && pCurrent->HasRight()) || (pCurrent->HasLeft() && !pCurrent->HasRight()))
+
+
+	// If the left child of parent is getting deleted	
+	if (pParent->GetLeft() == pCurrent) {
+		// Remove node with only left child
+		if (pCurrent->HasLeft() && !pCurrent->HasRight()) {
+			pParent->SetLeft(pCurrent->GetLeft());
+		}
+		// Remove node with only right child
+		else if (!pCurrent->HasLeft() && pCurrent->HasRight()) {
+			pParent->SetLeft(pCurrent->GetRight());			
+		}
+		// Delete Current node
+		delete pCurrent;
+		pCurrent = nullptr;
+		return;
+	}
+
+
+	// If the right child of parent is getting deleted
+	if (pParent->GetRight() == pCurrent) {
+		// Remove node with only left child
+		if (pCurrent->HasLeft() && !pCurrent->HasRight()) {
+			pParent->SetLeft(pCurrent->GetLeft());
+		}
+		// Remove node with only right child
+		else if (!pCurrent->HasLeft() && pCurrent->HasRight()) {
+			pParent->SetRight(pCurrent->GetRight());
+		}
+		// Delete Current node
+		delete pCurrent;
+		pCurrent = nullptr;
+		return;
+	}
+
+	// Remove node with two children (check if smallest to right has right child)
+	// All remaining cases will have two children
+	// Check if it is possible to go right by one step
 	if (pCurrent->HasRight()) {
+		// Step right once, then left as far as possible
 		pTemporaryNode = pCurrent->GetRight();
 		while (pTemporaryNode != nullptr)
 		{
-			pTemporaryNode = pTemporaryNode->GetLeft();
+			if (pTemporaryNode->GetLeft() == nullptr) {
+				break;
+			}
+			else {
+				pTemporaryNode = pTemporaryNode->GetLeft();
+			}
 		}
+		// It is possible for temp node to have right hand nodes
+		// First check to see if this is the case
+		if (pTemporaryNode->HasRight()) {
+			// Run FindNode passing pTemporaryNode and pParent
+			// It's okay to change the address of pParent as it is
+			// not required for deleting a node with 2 children 
+			FindNode(pTemporaryNode->GetData(), pTemporaryNode, pParent);
+			pParent->SetLeft(pTemporaryNode->GetRight());
+		}
+		// Set the current node to the value of the smallest
+		// number larger than the node being deleted
 		pCurrent->SetData(pTemporaryNode->GetData());
-	}
-}
 
-void BinaryTree::RemoveLeaf(TreeNode*& nodeToDelete) {
-	nodeToDelete->SetData(0);
-	delete nodeToDelete;
+		delete pTemporaryNode;
+		pTemporaryNode = nullptr;		
+	}
 }
 
 void BinaryTree::PrintOrdered()

@@ -38,7 +38,7 @@ void BinaryTree::Insert(int a_nValue)
 	TreeNode* currentNode;
 	// Set the root node
 	if (IsEmpty()) {
-		m_pRoot = newNode;	
+		m_pRoot = newNode;
 		return;
 	}
 	currentNode = m_pRoot;
@@ -71,8 +71,7 @@ void BinaryTree::Insert(int a_nValue)
 		else {
 			return;
 		}
-	} 
-	while (currentNode != nullptr);
+	} while (currentNode != nullptr);
 }
 
 TreeNode* BinaryTree::Find(int a_nValue)
@@ -118,13 +117,22 @@ void BinaryTree::Remove(int a_nValue)
 		return;
 	}
 
+	/*if (pCurrent == m_pRoot) {
+	}*/
+
 	// Remove Leaf Node
 	if (!pCurrent->HasLeft() && !pCurrent->HasRight()) {
-		delete pCurrent;
+		if (pCurrent == pParent->GetLeft()) {
+			pParent->SetLeft(nullptr);
+		}
+		else if (pCurrent == pParent->GetRight()) {
+			pParent->SetRight(nullptr);
+		}
 		pCurrent = nullptr;
-		return;
-	}
 
+	}
+	m_pRoot = nullptr;
+	return;
 
 	// If the left child of parent is getting deleted	
 	if (pParent->GetLeft() == pCurrent) {
@@ -134,10 +142,9 @@ void BinaryTree::Remove(int a_nValue)
 		}
 		// Remove node with only right child
 		else if (!pCurrent->HasLeft() && pCurrent->HasRight()) {
-			pParent->SetLeft(pCurrent->GetRight());			
+			pParent->SetLeft(pCurrent->GetRight());
 		}
 		// Delete Current node
-		delete pCurrent;
 		pCurrent = nullptr;
 		return;
 	}
@@ -154,12 +161,13 @@ void BinaryTree::Remove(int a_nValue)
 			pParent->SetRight(pCurrent->GetRight());
 		}
 		// Delete Current node
-		delete pCurrent;
+
 		pCurrent = nullptr;
 		return;
 	}
 
-	// Remove node with two children (check if smallest to right has right child)
+	// Remove node with two children 
+	// (Also checks if smallest to right has right child)
 	// All remaining cases will have two children
 	// Check if it is possible to go right by one step
 	if (pCurrent->HasRight()) {
@@ -188,8 +196,7 @@ void BinaryTree::Remove(int a_nValue)
 		// number larger than the node being deleted
 		pCurrent->SetData(pTemporaryNode->GetData());
 
-		delete pTemporaryNode;
-		pTemporaryNode = nullptr;		
+		pTemporaryNode = nullptr;
 	}
 }
 

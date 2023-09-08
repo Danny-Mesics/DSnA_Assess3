@@ -52,16 +52,16 @@ int main(int argc, char* argv[])
             m_selectedNode = m_binaryTree.Find(valueBoxValue);
         }
 
-        if (GuiButton(Rectangle { 160, 60, 125, 30 }, GuiIconText(RICON_CROSS, "Remove")))
-        {
-            // Implement the code to remove the node with value = valueBoxValue from your binary tree here! 
-            
-            m_binaryTree.Remove(valueBoxValue);
-            delete m_selectedNode;
-            m_selectedNode = nullptr;
-        }
+        //if (GuiButton(Rectangle { 160, 60, 125, 30 }, GuiIconText(RICON_CROSS, "Remove")))
+        //{
+        //    // Implement the code to remove the node with value = valueBoxValue from your binary tree here! 
+        //    
+        //    m_binaryTree.Remove(valueBoxValue);
+        //    delete m_selectedNode;
+        //    m_selectedNode = nullptr;
+        //}
 
-        if (GuiButton(Rectangle{ 160, 95, 125, 30 }, GuiIconText(RICON_LENS, "Find")))
+        if (GuiButton(Rectangle{ 160, 60, 125, 30 }, GuiIconText(RICON_LENS, "Find")))
         {
             // Implement the code to find the node with value = valueBoxValue from your binary tree here! 
             m_selectedNode = m_binaryTree.Find(valueBoxValue);

@@ -9,6 +9,12 @@ TreeNode::TreeNode(int value) : m_value(value), m_left(nullptr), m_right(nullptr
 
 TreeNode::~TreeNode()
 {
+	if (m_left != nullptr) {
+		delete m_left;
+	}
+	if (m_right != nullptr) {
+		delete m_right;
+	}
 }
 
 void TreeNode::Draw(int x, int y, bool selected)

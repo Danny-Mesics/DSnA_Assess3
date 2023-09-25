@@ -18,10 +18,7 @@ BinaryTree::BinaryTree()
 
 BinaryTree::~BinaryTree()
 {
-	while (m_pRoot)
-	{
-		Remove(m_pRoot->GetData());
-	}
+	delete m_pRoot;
 }
 
 // Return whether the tree is empty
